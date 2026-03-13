@@ -1,0 +1,7 @@
+# IDE / local
+.claude/
+.DS_Store
+
+# Dependencies and build (eleva-docs has its own .gitignore)
+eleva-docs/node_modules/
+eleva-docs/.next/

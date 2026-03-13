@@ -1,0 +1,12 @@
+{
+  "ui": {
+    "searchPlaceholder": "Buscar en la documentación...",
+    "searchModalPlaceholder": "Buscar en la documentación...",
+    "noResults": "No hay resultados para",
+    "backToDocs": "Volver a la documentación",
+    "pageNotFound": "Página no encontrada",
+    "pageNotFoundDescription": "La página de documentación que buscas no existe.",
+    "getApiKey": "Obtener clave API",
+    "openMenu": "Abrir menú"
+  }
+}

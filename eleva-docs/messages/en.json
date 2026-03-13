@@ -1,0 +1,12 @@
+{
+  "ui": {
+    "searchPlaceholder": "Search docs...",
+    "searchModalPlaceholder": "Search documentation...",
+    "noResults": "No results for",
+    "backToDocs": "Back to Docs",
+    "pageNotFound": "Page not found",
+    "pageNotFoundDescription": "The documentation page you're looking for doesn't exist.",
+    "getApiKey": "Get API Key",
+    "openMenu": "Open menu"
+  }
+}

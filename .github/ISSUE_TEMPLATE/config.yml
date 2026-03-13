@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Eleva API Support Ticket
+    url: https://elevabuilds.com/support
+    about: Please use this to raise a ticket for your API queries.

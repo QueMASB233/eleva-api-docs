@@ -1,0 +1,20 @@
+{
+  "name": "eleva-crm-api-docs",
+  "version": "1.0.0",
+  "description": "This repo contains the source of public api documents",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "eleva-crm",
+    "public",
+    "api",
+    "documents"
+  ],
+  "author": "Eleva CRM",
+  "license": "ISC"
+}
