@@ -1,4 +1,4 @@
-# GoEleva CRM API V2 Documentation
+# Eleva CRM API V2 Documentation
 
 Welcome to the official public repository for **Eleva CRM API V2 Docs**! 🚀
 
