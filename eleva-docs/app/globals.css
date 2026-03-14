@@ -383,9 +383,9 @@ pre:hover .copy-btn {
     max-width: 100%;
   }
 
-  /* ── API explorer: always has side breathing room ── */
+  /* ── API explorer: side breathing room, no double-padding ── */
   .api-explorer-container {
-    padding: 16px 16px 32px;
+    padding: 0 0 32px;
     padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
   }
 
@@ -446,14 +446,15 @@ pre:hover .copy-btn {
     height: auto !important;
   }
 
-  /* 7. Harmonize Stoplight's internal horizontal padding with our container */
+  /* 7. Reduce Stoplight's large default side padding to a mobile-friendly value.
+        sl-px-8 = 2rem (32px), sl-px-10 = 2.5rem (40px) by default. */
   .sl-elements .sl-px-8 {
-    padding-left: 4px !important;
-    padding-right: 4px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
   .sl-elements .sl-px-10 {
-    padding-left: 4px !important;
-    padding-right: 4px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   /* 8. Reasonable vertical rhythm between endpoint sections */
@@ -469,18 +470,12 @@ pre:hover .copy-btn {
   .sl-elements h4 {
     word-break: break-word !important;
     overflow-wrap: break-word !important;
-    hyphens: auto !important;
   }
 
   /* 10. Tables: scrollable, never overflowing */
   .sl-elements table {
     min-width: 0 !important;
     width: 100% !important;
-  }
-
-  /* 11. Make badge / method chips more legible */
-  .sl-elements .sl-text-base {
-    font-size: 15px !important;
   }
 }
 
