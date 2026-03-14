@@ -224,14 +224,32 @@ h3:hover .anchor-link {
   background: var(--text-muted);
 }
 
-/* Stoplight Elements overrides */
+/* ── Stoplight Elements overrides ──────────────────────────── */
 .sl-elements .sl-text-primary {
   color: var(--text-primary) !important;
 }
 
-/* Make Stoplight Elements scroll properly on mobile */
+/* Prevent horizontal overflow from internal content */
 .sl-elements {
   overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Prevent long strings (URLs, tokens) from overflowing */
+.sl-elements * {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* But keep code/pre blocks scrollable, not wrapping */
+.sl-elements pre,
+.sl-elements code,
+.sl-elements .sl-code-viewer,
+.sl-elements .sl-code-editor {
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  white-space: pre !important;
+  overflow-x: auto !important;
 }
 
 .copy-btn {
@@ -358,6 +376,97 @@ pre:hover .copy-btn {
 
   .api-explorer-container {
     padding: 8px 0;
+  }
+
+  /* ── Stoplight Elements: force single-column layout on mobile ─ */
+
+  /*
+   * Stoplight Elements renders each endpoint with a two-column flex layout:
+   *   Left  → description, parameters, request/response tables
+   *   Right → Auth panel, code samples, Try It button
+   *
+   * On mobile we stack them vertically.
+   *
+   * Key internal classes (Stoplight Elements v9 utility system):
+   *   .sl-flex              → display: flex
+   *   .sl-overflow-y-hidden → overflow-y: hidden (the 2-col wrapper)
+   *   .sl-overflow-y-auto   → overflow-y: auto   (each scrollable panel)
+   *   .sl-flex-1.sl-w-0     → left column  (flex: 1; width: 0)
+   *   .sl-w-2\/5            → right column (width: 40%)
+   *   .sl-ml-16             → right column margin-left (4rem)
+   *   .sl-h-full            → height: 100% on the operation container
+   */
+
+  /* 1. Remove height lock so the container grows naturally */
+  .sl-elements .HttpOperation,
+  .sl-elements .HttpOperation > .sl-flex {
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* 2. The two-column wrapper: switch from row to column */
+  .sl-elements .HttpOperation .sl-overflow-y-hidden,
+  .sl-elements .HttpOperation > div > .sl-flex {
+    flex-direction: column !important;
+    overflow-y: visible !important;
+    height: auto !important;
+  }
+
+  /* 3. Left panel: restore width (it's set to 0 to let flex grow it) */
+  .sl-elements .sl-flex-1.sl-w-0 {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-y: visible !important;
+  }
+
+  /* 4. Right panel: full width, no left margin */
+  .sl-elements .sl-w-2\/5 {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    overflow-y: visible !important;
+  }
+
+  /* 5. Remove overflow-y: auto from internal panels so page scroll works */
+  .sl-elements .sl-overflow-y-auto {
+    overflow-y: visible !important;
+  }
+
+  /* 6. Remove sl-h-full that locks height on inner elements */
+  .sl-elements .sl-h-full {
+    height: auto !important;
+  }
+
+  /* 7. Comfortable side padding inside Stoplight's content areas */
+  .sl-elements .sl-px-8 {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .sl-elements .sl-px-10 {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* 8. Reduce excess vertical spacing between sections */
+  .sl-elements .sl-py-10 {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
+
+  /* 9. Headings inside Stoplight: prevent hard wrapping */
+  .sl-elements h1,
+  .sl-elements h2,
+  .sl-elements h3,
+  .sl-elements h4 {
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* 10. Ensure tables inside Stoplight don't overflow */
+  .sl-elements table {
+    min-width: 0 !important;
+    width: 100% !important;
   }
 }
 
