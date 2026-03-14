@@ -7,7 +7,7 @@ const queryClient = new QueryClient();
 
 function SkeletonLoader() {
   return (
-    <div style={{ width: "100%", padding: "48px 32px" }}>
+    <div className="doc-content">
       <div className="skeleton" style={{ height: "36px", width: "260px", marginBottom: "24px" }} />
       <div className="skeleton" style={{ height: "16px", width: "100%", marginBottom: "12px" }} />
       <div className="skeleton" style={{ height: "16px", width: "80%", marginBottom: "12px" }} />
@@ -34,7 +34,7 @@ export default function ApiExplorer({ specUrl }: { specUrl: string }) {
 
   if (error) {
     return (
-      <div style={{ width: "100%", padding: "48px 32px" }}>
+      <div className="doc-content">
         <div
           style={{
             padding: "20px",
@@ -90,7 +90,7 @@ function StoplightAPI({ spec }: { spec: string }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="sl-elements" style={{ padding: "24px 32px", width: "100%" }}>
+      <div className="sl-elements api-explorer-container">
         <APIComponent
           apiDescriptionDocument={spec}
           router="hash"

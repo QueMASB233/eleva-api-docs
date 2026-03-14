@@ -23,161 +23,84 @@ export default function TopBar({ onMenuToggle }: { onMenuToggle: () => void }) {
 
   return (
     <>
-      <header
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "var(--topbar-height)",
-          background: "rgba(255, 255, 255, 0.72)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          borderBottom: "1px solid var(--border)",
-          zIndex: 100,
-          display: "flex",
-          alignItems: "center",
-          padding: "0 20px",
-          gap: "16px",
-        }}
-      >
+      <header className="topbar">
         {/* Mobile hamburger */}
         <button
           onClick={onMenuToggle}
           aria-label={t("ui.openMenu")}
-          style={{
-            display: "none",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            padding: "8px",
-            color: "var(--text-primary)",
-          }}
-          className="mobile-menu-btn"
+          className="topbar-hamburger"
         >
-          <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <path d="M3 6h18M3 12h18M3 18h18" />
+          <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M3 6h16M3 12h16M3 18h16" />
           </svg>
         </button>
 
         {/* Logo */}
-        <a href="/docs/docs/oauth/overview" style={{ display: "flex", alignItems: "center", gap: "4px", textDecoration: "none", flexShrink: 0 }}>
-          <span style={{ fontFamily: "DM Sans, sans-serif", fontWeight: 700, fontSize: "18px", color: "var(--color-accent)" }}>
-            Eleva CRM
-          </span>
-          <span style={{ fontFamily: "DM Sans, sans-serif", fontWeight: 500, fontSize: "18px", color: "var(--text-muted)" }}>
-            API
-          </span>
+        <a href="/docs/docs/oauth/overview" className="topbar-logo">
+          <span className="topbar-logo-brand">Eleva CRM</span>
+          <span className="topbar-logo-api">API</span>
         </a>
 
-        {/* Search bar */}
+        {/* Full search bar — desktop only */}
         <button
           onClick={() => setSearchOpen(true)}
-          style={{
-            flex: 1,
-            maxWidth: "480px",
-            margin: "0 auto",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: "8px 14px",
-            background: "var(--bg-secondary)",
-            border: "1px solid var(--border)",
-            borderRadius: "10px",
-            cursor: "pointer",
-            color: "var(--text-muted)",
-            fontSize: "14px",
-            transition: "border-color 150ms ease",
-          }}
+          className="topbar-search-bar"
+          aria-label={t("ui.searchPlaceholder")}
         >
           <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <circle cx="7" cy="7" r="5" />
             <path d="M15 15l-3.5-3.5" />
           </svg>
-          <span style={{ flex: 1, textAlign: "left" }}>{t("ui.searchPlaceholder")}</span>
-          <kbd
-            style={{
-              background: "var(--bg-primary)",
-              border: "1px solid var(--border)",
-              borderRadius: "5px",
-              padding: "1px 6px",
-              fontSize: "11px",
-              color: "var(--text-muted)",
-              fontFamily: "inherit",
-            }}
-          >
-            &#8984;K
-          </kbd>
+          <span className="topbar-search-text">{t("ui.searchPlaceholder")}</span>
+          <kbd className="topbar-kbd">&#8984;K</kbd>
         </button>
 
+        {/* Spacer — visible on mobile to push right content to edge */}
+        <div className="topbar-spacer" />
+
         {/* Right section */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
-          <span
-            style={{
-              fontSize: "12px",
-              fontWeight: 500,
-              color: "var(--text-muted)",
-              background: "var(--bg-secondary)",
-              padding: "3px 10px",
-              borderRadius: "8px",
-              border: "1px solid var(--border)",
-            }}
-            className="hide-mobile"
+        <div className="topbar-right">
+          {/* Search icon — mobile only */}
+          <button
+            onClick={() => setSearchOpen(true)}
+            aria-label={t("ui.searchPlaceholder")}
+            className="topbar-search-icon"
           >
-            v2025
-          </span>
+            <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <circle cx="9" cy="9" r="6" />
+              <path d="M18 18l-4.35-4.35" />
+            </svg>
+          </button>
+
+          {/* Version badge — desktop only */}
+          <span className="topbar-version">v2025</span>
+
+          {/* Get API Key — desktop only */}
           <a
             href="https://app.elevabuilds.com"
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "4px",
-              padding: "7px 18px",
-              background: "var(--color-accent)",
-              color: "#fff",
-              borderRadius: "20px",
-              fontSize: "13px",
-              fontWeight: 600,
-              textDecoration: "none",
-              transition: "background 150ms ease",
-              whiteSpace: "nowrap",
-            }}
+            className="topbar-cta"
           >
             {t("ui.getApiKey")}
-            <span style={{ fontSize: "14px" }}>&rarr;</span>
+            <span aria-hidden="true">&rarr;</span>
           </a>
-          <div style={{ display: "flex", gap: "4px" }}>
+
+          {/* Language switcher */}
+          <div className="topbar-lang">
             <button
               type="button"
               onClick={() => setLocale("en")}
-              style={{
-                padding: "4px 10px",
-                fontSize: "12px",
-                fontWeight: locale === "en" ? 600 : 400,
-                background: locale === "en" ? "var(--color-accent)" : "transparent",
-                color: locale === "en" ? "#fff" : "var(--text-muted)",
-                border: "1px solid var(--border)",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
+              className={`topbar-lang-btn${locale === "en" ? " active" : ""}`}
+              aria-pressed={locale === "en"}
             >
               EN
             </button>
             <button
               type="button"
               onClick={() => setLocale("es")}
-              style={{
-                padding: "4px 10px",
-                fontSize: "12px",
-                fontWeight: locale === "es" ? 600 : 400,
-                background: locale === "es" ? "var(--color-accent)" : "transparent",
-                color: locale === "es" ? "#fff" : "var(--text-muted)",
-                border: "1px solid var(--border)",
-                borderRadius: "8px",
-                cursor: "pointer",
-              }}
+              className={`topbar-lang-btn${locale === "es" ? " active" : ""}`}
+              aria-pressed={locale === "es"}
             >
               ES
             </button>
@@ -188,12 +111,230 @@ export default function TopBar({ onMenuToggle }: { onMenuToggle: () => void }) {
       {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
 
       <style jsx>{`
+        .topbar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: var(--topbar-height);
+          background: rgba(255, 255, 255, 0.82);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-bottom: 1px solid var(--border);
+          z-index: 100;
+          display: flex;
+          align-items: center;
+          padding: 0 20px;
+          gap: 12px;
+        }
+
+        .topbar-hamburger {
+          display: none;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 8px;
+          margin: -8px -4px -8px -8px;
+          color: var(--text-primary);
+          border-radius: 8px;
+          flex-shrink: 0;
+          -webkit-tap-highlight-color: transparent;
+          align-items: center;
+          justify-content: center;
+        }
+        .topbar-hamburger:active {
+          background: var(--bg-secondary);
+        }
+
+        .topbar-logo {
+          display: flex;
+          align-items: center;
+          gap: 3px;
+          text-decoration: none;
+          flex-shrink: 0;
+        }
+        .topbar-logo-brand {
+          font-family: "DM Sans", sans-serif;
+          font-weight: 700;
+          font-size: 18px;
+          color: var(--color-accent);
+        }
+        .topbar-logo-api {
+          font-family: "DM Sans", sans-serif;
+          font-weight: 500;
+          font-size: 18px;
+          color: var(--text-muted);
+        }
+
+        .topbar-search-bar {
+          flex: 1;
+          max-width: 480px;
+          margin: 0 auto;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 8px 14px;
+          background: var(--bg-secondary);
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          cursor: pointer;
+          color: var(--text-muted);
+          font-size: 14px;
+          font-family: inherit;
+          transition: border-color 150ms ease, box-shadow 150ms ease;
+        }
+        .topbar-search-bar:hover {
+          border-color: var(--color-accent);
+          box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.08);
+        }
+        .topbar-search-text {
+          flex: 1;
+          text-align: left;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .topbar-kbd {
+          background: var(--bg-primary);
+          border: 1px solid var(--border);
+          border-radius: 5px;
+          padding: 1px 6px;
+          font-size: 11px;
+          color: var(--text-muted);
+          font-family: inherit;
+          flex-shrink: 0;
+        }
+
+        .topbar-spacer {
+          display: none;
+          flex: 1;
+        }
+
+        .topbar-right {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-shrink: 0;
+        }
+
+        .topbar-search-icon {
+          display: none;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 8px;
+          color: var(--text-secondary);
+          border-radius: 8px;
+          -webkit-tap-highlight-color: transparent;
+          align-items: center;
+          justify-content: center;
+        }
+        .topbar-search-icon:active {
+          background: var(--bg-secondary);
+        }
+
+        .topbar-version {
+          font-size: 12px;
+          font-weight: 500;
+          color: var(--text-muted);
+          background: var(--bg-secondary);
+          padding: 3px 10px;
+          border-radius: 8px;
+          border: 1px solid var(--border);
+          white-space: nowrap;
+        }
+
+        .topbar-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 7px 16px;
+          background: var(--color-accent);
+          color: #fff;
+          border-radius: 20px;
+          font-size: 13px;
+          font-weight: 600;
+          text-decoration: none;
+          transition: background 150ms ease;
+          white-space: nowrap;
+        }
+        .topbar-cta:hover {
+          background: var(--color-accent-dark);
+          color: #fff;
+        }
+
+        .topbar-lang {
+          display: flex;
+          gap: 4px;
+        }
+        .topbar-lang-btn {
+          padding: 4px 9px;
+          font-size: 12px;
+          font-weight: 400;
+          background: transparent;
+          color: var(--text-muted);
+          border: 1px solid var(--border);
+          border-radius: 8px;
+          cursor: pointer;
+          font-family: inherit;
+          transition: background 100ms ease, color 100ms ease;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .topbar-lang-btn.active {
+          font-weight: 600;
+          background: var(--color-accent);
+          color: #fff;
+          border-color: var(--color-accent);
+        }
+
+        /* ── Mobile ──────────────────────────────────── */
         @media (max-width: 767px) {
-          .mobile-menu-btn {
-            display: block !important;
+          .topbar {
+            padding: 0 12px;
+            gap: 8px;
           }
-          .hide-mobile {
-            display: none !important;
+
+          .topbar-hamburger {
+            display: flex;
+          }
+
+          .topbar-logo-brand,
+          .topbar-logo-api {
+            font-size: 16px;
+          }
+
+          /* Hide full search bar, show icon instead */
+          .topbar-search-bar {
+            display: none;
+          }
+          .topbar-spacer {
+            display: block;
+          }
+          .topbar-search-icon {
+            display: flex;
+          }
+
+          /* Hide version badge and CTA — CTA lives in the mobile drawer */
+          .topbar-version {
+            display: none;
+          }
+          .topbar-cta {
+            display: none;
+          }
+
+          .topbar-right {
+            gap: 4px;
+          }
+
+          .topbar-lang-btn {
+            padding: 5px 8px;
+            min-height: 36px;
+          }
+        }
+
+        @media (max-width: 340px) {
+          .topbar-logo-api {
+            display: none;
           }
         }
       `}</style>
