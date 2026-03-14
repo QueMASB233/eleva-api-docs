@@ -383,71 +383,71 @@ pre:hover .copy-btn {
     max-width: 100%;
   }
 
-  /* ── API explorer: side breathing room, no double-padding ── */
+  /* ── API explorer container ── */
   .api-explorer-container {
-    padding: 0 0 32px;
+    padding: 16px 0 32px;
     padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
 
-  /* ── Stoplight Elements: single-column layout ────────────────
+  /* ── Stoplight Elements: single-column layout ─────────────────
    *
-   * Stoplight renders each endpoint as a two-column flex row:
-   *   Left  → description, params, request/response tables
-   *   Right → Auth panel, code samples, Try It
+   * Stoplight renders each endpoint as a two-column flex row with
+   * fixed heights and internal scroll containers. On mobile we:
+   *   1. Remove the height lock on HttpOperation
+   *   2. Stack the two columns vertically
+   *   3. Let the panels scroll with the page (overflow visible)
+   *   4. Set the right panel (code/Try It) to full width
    *
-   * We stack them vertically and let the page scroll.
-   *
-   * Internal utility classes (Elements v9):
-   *   .sl-overflow-y-hidden  the two-column wrapper
-   *   .sl-overflow-y-auto    each independently-scrolling panel
-   *   .sl-flex-1.sl-w-0      left column (flex: 1; width: 0)
-   *   .sl-w-2\/5             right column (40% width)
-   *   .sl-h-full             locks height on the operation root
-   * ─────────────────────────────────────────────────────────── */
+   * We deliberately avoid touching:
+   *   - .sl-overflow-y-auto globally (used in tables/code blocks)
+   *   - min-width on flex children (causes cell collapse to 0px)
+   * ──────────────────────────────────────────────────────────── */
 
-  /* 1. Remove height lock so container grows naturally */
-  .sl-elements .HttpOperation,
+  /* 1. Remove height lock on operation root */
+  .sl-elements .HttpOperation {
+    height: auto !important;
+    min-height: 0 !important;
+  }
   .sl-elements .HttpOperation > .sl-flex {
     height: auto !important;
     min-height: 0 !important;
   }
 
-  /* 2. Two-column wrapper → single column */
-  .sl-elements .HttpOperation .sl-overflow-y-hidden,
-  .sl-elements .HttpOperation > div > .sl-flex {
+  /* 2. Two-column wrapper → single column, no inner scroll */
+  .sl-elements .HttpOperation .sl-overflow-y-hidden {
     flex-direction: column !important;
-    overflow-y: visible !important;
+    overflow: visible !important;
     height: auto !important;
   }
 
-  /* 3. Left panel: let it take full width */
-  .sl-elements .sl-flex-1.sl-w-0 {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
+  /* 3. Left panel scroll container → let page scroll */
+  .sl-elements .HttpOperation .sl-flex-1.sl-w-0 {
     overflow-y: visible !important;
+    /* width is already 100% in column flex context */
   }
 
-  /* 4. Right panel: full width, no gap from left panel */
-  .sl-elements .sl-w-2\/5 {
+  /* 4. Right panel: full width, no gap */
+  .sl-elements .HttpOperation .sl-w-2\/5 {
     width: 100% !important;
     max-width: 100% !important;
     margin-left: 0 !important;
     overflow-y: visible !important;
   }
 
-  /* 5. Kill internal scroll containers — use page scroll */
-  .sl-elements .sl-overflow-y-auto {
-    overflow-y: visible !important;
-  }
-
-  /* 6. Remove height: 100% locks on inner containers */
-  .sl-elements .sl-h-full {
+  /* 5. Unlock heights inside HttpOperation so content renders */
+  .sl-elements .HttpOperation .sl-h-full {
     height: auto !important;
   }
 
-  /* 7. Reduce Stoplight's large default side padding to a mobile-friendly value.
-        sl-px-8 = 2rem (32px), sl-px-10 = 2.5rem (40px) by default. */
+  /* 6. Scroll containers inside HttpOperation → page scroll */
+  .sl-elements .HttpOperation .sl-overflow-y-auto {
+    overflow-y: visible !important;
+  }
+
+  /* 7. Side padding: Stoplight defaults are 2–2.5rem; trim to 16px */
   .sl-elements .sl-px-8 {
     padding-left: 16px !important;
     padding-right: 16px !important;
@@ -457,25 +457,18 @@ pre:hover .copy-btn {
     padding-right: 16px !important;
   }
 
-  /* 8. Reasonable vertical rhythm between endpoint sections */
+  /* 8. Vertical rhythm */
   .sl-elements .sl-py-10 {
     padding-top: 20px !important;
     padding-bottom: 20px !important;
   }
 
-  /* 9. Headings inside Stoplight: no character splitting */
+  /* 9. Prevent long words from overflowing */
   .sl-elements h1,
   .sl-elements h2,
   .sl-elements h3,
   .sl-elements h4 {
-    word-break: break-word !important;
     overflow-wrap: break-word !important;
-  }
-
-  /* 10. Tables: scrollable, never overflowing */
-  .sl-elements table {
-    min-width: 0 !important;
-    width: 100% !important;
   }
 }
 

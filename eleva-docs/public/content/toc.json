@@ -2,45 +2,6 @@
     "items": [
         {
             "type": "divider",
-            "title": "OAUTH 2.0"
-        },
-        {
-            "type": "item",
-            "title": "Overview",
-            "uri": "docs/oauth/Overview.md"
-        },
-        {
-            "type": "item",
-            "title": "Scopes",
-            "uri": "docs/oauth/Scopes.md"
-        },
-        {
-            "type": "item",
-            "title": "Authorization",
-            "uri": "docs/oauth/Authorization.md"
-        },
-        {
-            "type": "item",
-            "title": "External Billing",
-            "uri": "docs/oauth/Billing.md"
-        },
-        {
-            "type": "item",
-            "title": "Webhook Authentication",
-            "uri": "docs/oauth/WebhookAuthentication.md"
-        },
-        {
-            "type": "item",
-            "title": "FAQs",
-            "uri": "docs/oauth/Faqs.md"
-        },
-        {
-            "type": "item",
-            "title": "OAuth 2.0",
-            "uri": "oauth/oauth.json"
-        },
-        {
-            "type": "divider",
             "title": "APIs"
         },
         {

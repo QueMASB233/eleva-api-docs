@@ -1,13 +1,5 @@
 {
     "items": [
-        {"type": "divider", "title": "OAUTH 2.0"},
-        {"type": "item", "title": "Resumen", "uri": "docs/oauth/Overview.md"},
-        {"type": "item", "title": "Alcances", "uri": "docs/oauth/Scopes.md"},
-        {"type": "item", "title": "Autorización", "uri": "docs/oauth/Authorization.md"},
-        {"type": "item", "title": "Facturación externa", "uri": "docs/oauth/Billing.md"},
-        {"type": "item", "title": "Autenticación de webhooks", "uri": "docs/oauth/WebhookAuthentication.md"},
-        {"type": "item", "title": "Preguntas frecuentes", "uri": "docs/oauth/Faqs.md"},
-        {"type": "item", "title": "OAuth 2.0", "uri": "oauth/oauth.json"},
         {"type": "divider", "title": "APIs"},
         {"type": "item", "title": "Lista de países", "uri": "docs/country list/Country.md"},
         {"type": "item", "title": "Businesses", "uri": "businesses/businesses.json"},
