@@ -2,7 +2,14 @@
 
 import { useEffect } from "react";
 import { TocSection } from "@/lib/toc";
-import Sidebar from "./Sidebar";
+import { usePathname } from "next/navigation";
+
+function uriToSlug(uri: string): string {
+  return "/docs/" + uri
+    .replace(/\.(md|json)$/, "")
+    .replace(/\s+/g, "-")
+    .toLowerCase();
+}
 
 export default function MobileDrawer({
   open,
@@ -13,6 +20,8 @@ export default function MobileDrawer({
   onClose: () => void;
   sections: TocSection[];
 }) {
+  const pathname = usePathname();
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -43,12 +52,12 @@ export default function MobileDrawer({
         style={{
           position: "absolute",
           inset: 0,
-          background: "rgba(0, 0, 0, 0.3)",
-          animation: "fadeIn 250ms ease",
+          background: "rgba(0, 0, 0, 0.4)",
+          animation: "drawerFadeIn 220ms ease",
         }}
       />
 
-      {/* Drawer */}
+      {/* Drawer panel */}
       <div
         style={{
           position: "absolute",
@@ -57,9 +66,11 @@ export default function MobileDrawer({
           bottom: 0,
           width: "min(300px, 85vw)",
           background: "var(--bg-secondary)",
-          animation: "slideIn 250ms ease",
+          animation: "drawerSlideIn 250ms cubic-bezier(0.32, 0.72, 0, 1)",
           display: "flex",
           flexDirection: "column",
+          /* Support notch / Dynamic Island */
+          paddingTop: "env(safe-area-inset-top, 0px)",
         }}
       >
         {/* Header */}
@@ -68,13 +79,23 @@ export default function MobileDrawer({
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "16px 20px",
+            padding: "14px 16px",
             borderBottom: "1px solid var(--border)",
+            flexShrink: 0,
           }}
         >
-          <span style={{ fontFamily: "DM Sans, sans-serif", fontWeight: 700, fontSize: "16px", color: "var(--color-accent)" }}>
-            Eleva CRM <span style={{ color: "var(--text-muted)", fontWeight: 500 }}>API</span>
-          </span>
+          <a
+            href="/docs/docs/oauth/overview"
+            onClick={onClose}
+            style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "3px" }}
+          >
+            <span style={{ fontFamily: "DM Sans, sans-serif", fontWeight: 700, fontSize: "17px", color: "var(--color-accent)" }}>
+              Eleva CRM
+            </span>
+            <span style={{ fontFamily: "DM Sans, sans-serif", fontWeight: 500, fontSize: "17px", color: "var(--text-muted)" }}>
+              {" "}API
+            </span>
+          </a>
           <button
             onClick={onClose}
             aria-label="Close menu"
@@ -84,6 +105,8 @@ export default function MobileDrawer({
               cursor: "pointer",
               padding: "8px",
               color: "var(--text-muted)",
+              borderRadius: "8px",
+              WebkitTapHighlightColor: "transparent",
             }}
           >
             <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
@@ -92,47 +115,50 @@ export default function MobileDrawer({
           </button>
         </div>
 
-        {/* Sidebar content - reuse Sidebar but override styles */}
+        {/* Nav links */}
         <div
-          style={{ flex: 1, overflowY: "auto" }}
+          style={{ flex: 1, overflowY: "auto", WebkitOverflowScrolling: "touch" as React.CSSProperties["WebkitOverflowScrolling"] }}
           onClick={(e) => {
             if ((e.target as HTMLElement).tagName === "A") {
               onClose();
             }
           }}
         >
-          <div style={{ padding: "8px 0" }}>
+          <div style={{ padding: "8px 0 24px" }}>
             {sections.map((section) => (
-              <div key={section.title} style={{ marginBottom: "8px" }}>
+              <div key={section.title} style={{ marginBottom: "4px" }}>
                 <div
                   style={{
-                    padding: "8px 20px 4px",
+                    padding: "10px 16px 4px",
                     fontSize: "10px",
                     fontWeight: 600,
                     textTransform: "uppercase",
-                    letterSpacing: "1px",
+                    letterSpacing: "1.2px",
                     color: "var(--text-muted)",
                   }}
                 >
                   {section.title}
                 </div>
                 {section.items.map((item) => {
-                  const href = "/docs/" + item.uri
-                    .replace(/\.(md|json)$/, "")
-                    .replace(/\s+/g, "-")
-                    .toLowerCase();
+                  const href = uriToSlug(item.uri);
+                  const isActive = pathname === href;
                   return (
                     <a
                       key={item.uri}
                       href={href}
                       style={{
-                        display: "block",
-                        padding: "10px 20px",
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "10px 16px 10px 13px",
                         fontSize: "15px",
-                        color: "var(--text-secondary)",
+                        fontWeight: isActive ? 600 : 400,
+                        color: isActive ? "var(--color-accent)" : "var(--text-secondary)",
                         textDecoration: "none",
+                        borderLeft: isActive ? "3px solid var(--color-accent)" : "3px solid transparent",
+                        background: isActive ? "rgba(0, 153, 255, 0.06)" : "transparent",
+                        /* Large enough tap target */
                         minHeight: "44px",
-                        lineHeight: "24px",
+                        WebkitTapHighlightColor: "transparent",
                       }}
                     >
                       {item.title}
@@ -144,13 +170,14 @@ export default function MobileDrawer({
           </div>
         </div>
 
-        {/* Sticky CTA at bottom */}
+        {/* Sticky bottom CTA */}
         <div
           style={{
-            padding: "16px 20px",
-            paddingBottom: "calc(16px + env(safe-area-inset-bottom, 0px))",
+            padding: "16px",
+            paddingBottom: "max(16px, env(safe-area-inset-bottom, 16px))",
             borderTop: "1px solid var(--border)",
             background: "var(--bg-secondary)",
+            flexShrink: 0,
           }}
         >
           <a
@@ -163,14 +190,15 @@ export default function MobileDrawer({
               justifyContent: "center",
               gap: "6px",
               width: "100%",
-              padding: "12px",
+              padding: "13px",
               background: "var(--color-accent)",
               color: "#fff",
               borderRadius: "12px",
               fontSize: "15px",
               fontWeight: 600,
               textDecoration: "none",
-              minHeight: "44px",
+              minHeight: "48px",
+              WebkitTapHighlightColor: "transparent",
             }}
           >
             Get API Key &rarr;
@@ -179,11 +207,11 @@ export default function MobileDrawer({
       </div>
 
       <style>{`
-        @keyframes fadeIn {
+        @keyframes drawerFadeIn {
           from { opacity: 0; }
           to { opacity: 1; }
         }
-        @keyframes slideIn {
+        @keyframes drawerSlideIn {
           from { transform: translateX(-100%); }
           to { transform: translateX(0); }
         }

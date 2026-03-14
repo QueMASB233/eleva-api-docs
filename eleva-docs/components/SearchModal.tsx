@@ -84,7 +84,9 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
         display: "flex",
         alignItems: "flex-start",
         justifyContent: "center",
-        paddingTop: "min(20vh, 120px)",
+        /* On mobile position near the top so virtual keyboard doesn't obscure results */
+        paddingTop: "max(env(safe-area-inset-top, 0px) + 8px, min(15vh, 80px))",
+        padding: "max(env(safe-area-inset-top, 0px) + 8px, min(15vh, 80px)) 16px 16px",
         animation: "fadeIn 150ms ease",
       }}
     >
@@ -103,8 +105,9 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
       <div
         style={{
           position: "relative",
-          width: "min(640px, calc(100vw - 32px))",
-          maxHeight: "min(480px, 70vh)",
+          width: "min(640px, 100%)",
+          /* On mobile, give more height since results are important */
+          maxHeight: "min(520px, 75vh)",
           background: "var(--bg-primary)",
           borderRadius: "var(--radius)",
           boxShadow: "var(--shadow-md), 0 0 0 1px var(--border)",
@@ -186,13 +189,16 @@ export default function SearchModal({ onClose }: { onClose: () => void }) {
                       display: "flex",
                       flexDirection: "column",
                       width: "100%",
-                      padding: "10px 12px",
+                      padding: "11px 12px",
                       border: "none",
                       borderRadius: "8px",
                       background: isSelected ? "var(--bg-secondary)" : "transparent",
                       cursor: "pointer",
                       textAlign: "left",
                       transition: "background 100ms ease",
+                      /* Adequate touch target */
+                      minHeight: "48px",
+                      WebkitTapHighlightColor: "transparent",
                     }}
                     onMouseEnter={() => setSelectedIndex(idx)}
                   >

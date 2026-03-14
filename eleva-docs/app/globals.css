@@ -27,6 +27,9 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent font size inflation on orientation change */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -35,11 +38,16 @@ body {
   line-height: 1.65;
   color: var(--text-secondary);
   background: var(--bg-primary);
+  /* Prevent horizontal scroll on mobile */
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text-primary);
+  /* Prevent long words from overflowing on mobile */
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 h1 {
@@ -69,15 +77,25 @@ h3 {
 
 p {
   margin-bottom: 16px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 a {
   color: var(--color-accent);
   text-decoration: none;
+  /* Better tap targets on mobile */
+  -webkit-tap-highlight-color: transparent;
 }
 
 a:hover {
   color: var(--color-accent-dark);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 code {
@@ -86,6 +104,9 @@ code {
   background: var(--bg-secondary);
   border-radius: 6px;
   padding: 2px 6px;
+  /* Prevent long identifiers from breaking layout */
+  overflow-wrap: break-word;
+  word-break: break-all;
 }
 
 pre {
@@ -95,14 +116,38 @@ pre {
   border-radius: var(--radius);
   padding: 16px 20px;
   overflow-x: auto;
+  /* Smooth scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
   margin: 16px 0;
   position: relative;
+  /* Prevent content from wrapping inside code blocks */
+  white-space: pre;
+  word-break: normal;
+  word-wrap: normal;
 }
 
 pre code {
   background: none;
   padding: 0;
   border-radius: 0;
+  word-break: normal;
+  overflow-wrap: normal;
+}
+
+/* Table wrapper for horizontal scrolling on mobile */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 16px 0;
+  border-radius: var(--radius);
+  /* Subtle shadow to hint at scrollability */
+  box-shadow: inset -8px 0 8px -8px rgba(0, 0, 0, 0.05);
+}
+
+.table-wrapper table {
+  margin: 0;
+  min-width: 520px;
 }
 
 table {
@@ -118,11 +163,14 @@ th {
   color: var(--text-primary);
   padding: 10px 12px;
   border-bottom: 2px solid var(--border);
+  white-space: nowrap;
 }
 
 td {
   padding: 10px 12px;
   border-bottom: 1px solid var(--border);
+  /* Allow cell content to wrap but prevent layout breaks */
+  max-width: 320px;
 }
 
 tr:nth-child(even) {
@@ -181,6 +229,11 @@ h3:hover .anchor-link {
   color: var(--text-primary) !important;
 }
 
+/* Make Stoplight Elements scroll properly on mobile */
+.sl-elements {
+  overflow-x: hidden;
+}
+
 .copy-btn {
   position: absolute;
   top: 8px;
@@ -194,10 +247,19 @@ h3:hover .anchor-link {
   cursor: pointer;
   opacity: 0;
   transition: opacity 150ms ease;
+  /* Always show on touch devices */
+  -webkit-tap-highlight-color: transparent;
 }
 
 pre:hover .copy-btn {
   opacity: 1;
+}
+
+/* Always show copy button on mobile (no hover state) */
+@media (hover: none) {
+  .copy-btn {
+    opacity: 1;
+  }
 }
 
 .copy-btn:hover {
@@ -205,6 +267,20 @@ pre:hover .copy-btn {
   border-color: var(--text-muted);
 }
 
+/* Doc content area */
+.doc-content {
+  width: 100%;
+  max-width: 100%;
+  padding: 48px 40px;
+}
+
+/* API explorer container */
+.api-explorer-container {
+  padding: 24px 32px;
+  width: 100%;
+}
+
+/* Skeleton loader */
 .skeleton {
   background: linear-gradient(90deg, var(--bg-secondary) 25%, #E8E8ED 50%, var(--bg-secondary) 75%);
   background-size: 200% 100%;
@@ -217,11 +293,76 @@ pre:hover .copy-btn {
   100% { background-position: -200% 0; }
 }
 
+/* ============================================================
+   MOBILE STYLES (≤ 767px)
+   ============================================================ */
 @media (max-width: 767px) {
   body {
+    /* 16px prevents iOS auto-zoom on input focus */
     font-size: 16px;
+    line-height: 1.6;
   }
-  h1 { font-size: 28px; }
-  h2 { font-size: 22px; }
-  h3 { font-size: 17px; }
+
+  h1 {
+    font-size: 26px;
+    letter-spacing: -0.3px;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-size: 20px;
+    margin-top: 36px;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    font-size: 17px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+  }
+
+  pre {
+    font-size: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    /* Ensure horizontal scroll on small screens */
+    max-width: calc(100vw - 32px);
+  }
+
+  code {
+    font-size: 12px;
+  }
+
+  table {
+    font-size: 13px;
+  }
+
+  th, td {
+    padding: 8px 10px;
+  }
+
+  blockquote {
+    padding: 8px 12px;
+    font-size: 15px;
+  }
+
+  ul, ol {
+    padding-left: 20px;
+  }
+
+  .doc-content {
+    padding: 24px 16px;
+    /* Add safe area support for bottom inset (home indicator) */
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .api-explorer-container {
+    padding: 8px 0;
+  }
+}
+
+/* Narrow screens */
+@media (max-width: 390px) {
+  h1 { font-size: 22px; }
+  h2 { font-size: 18px; }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState, useEffect } from "react";
+import { useCallback, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -31,7 +31,7 @@ function slugify(text: string): string {
 
 export default function DocRenderer({ content }: { content: string }) {
   return (
-    <div style={{ width: "100%", maxWidth: "100%", padding: "48px 32px" }}>
+    <div className="doc-content">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
@@ -70,8 +70,18 @@ export default function DocRenderer({ content }: { content: string }) {
               </pre>
             );
           },
+          // Wrap tables for horizontal scrolling on mobile
+          table: ({ children }) => (
+            <div className="table-wrapper">
+              <table>{children}</table>
+            </div>
+          ),
           a: ({ href, children }) => (
-            <a href={href} target={href?.startsWith("http") ? "_blank" : undefined} rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}>
+            <a
+              href={href}
+              target={href?.startsWith("http") ? "_blank" : undefined}
+              rel={href?.startsWith("http") ? "noopener noreferrer" : undefined}
+            >
               {children}
             </a>
           ),
@@ -79,14 +89,6 @@ export default function DocRenderer({ content }: { content: string }) {
       >
         {content}
       </ReactMarkdown>
-
-      <style>{`
-        @media (max-width: 767px) {
-          div[style*="width: 100%"] {
-            padding: 24px 16px !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }

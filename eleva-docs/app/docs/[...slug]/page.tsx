@@ -102,7 +102,7 @@ export default function DocPage() {
   return (
     <AppShell>
       {contentType === "loading" && (
-        <div style={{ width: "100%", padding: "48px 32px" }}>
+        <div className="doc-content">
           <div className="skeleton" style={{ height: "36px", width: "260px", marginBottom: "24px" }} />
           <div className="skeleton" style={{ height: "16px", width: "100%", marginBottom: "12px" }} />
           <div className="skeleton" style={{ height: "16px", width: "80%", marginBottom: "12px" }} />
@@ -115,7 +115,7 @@ export default function DocPage() {
       {contentType === "json" && <ApiExplorer specUrl={specUrl} />}
 
       {contentType === "error" && (
-        <div style={{ width: "100%", padding: "48px 32px", textAlign: "center" }}>
+        <div className="doc-content" style={{ textAlign: "center" }}>
           <h1 style={{ marginBottom: "16px" }}>{t("ui.pageNotFound")}</h1>
           <p style={{ color: "var(--text-muted)", marginBottom: "24px" }}>
             {t("ui.pageNotFoundDescription")}
