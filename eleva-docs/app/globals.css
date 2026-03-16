@@ -385,7 +385,7 @@ pre:hover .copy-btn {
 
   /* ── API explorer container ── */
   .api-explorer-container {
-    padding: 16px 0 32px;
+    padding: 16px 16px 32px;
     padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
     width: 100%;
     box-sizing: border-box;
@@ -423,10 +423,12 @@ pre:hover .copy-btn {
     height: auto !important;
   }
 
-  /* 3. Left panel scroll container → let page scroll */
+  /* 3. Left panel: must be explicit — .sl-w-0 sets width:0 which
+        overrides flex stretch even in column direction */
   .sl-elements .HttpOperation .sl-flex-1.sl-w-0 {
+    width: 100% !important;
+    max-width: 100% !important;
     overflow-y: visible !important;
-    /* width is already 100% in column flex context */
   }
 
   /* 4. Right panel: full width, no gap */
@@ -447,14 +449,16 @@ pre:hover .copy-btn {
     overflow-y: visible !important;
   }
 
-  /* 7. Side padding: Stoplight defaults are 2–2.5rem; trim to 16px */
+  /* 7. The container already provides 16px side padding.
+        Cancel Stoplight's additional sl-px-8/sl-px-10 (2–2.5rem)
+        to keep all content flush against the container gutter. */
   .sl-elements .sl-px-8 {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
   .sl-elements .sl-px-10 {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   /* 8. Vertical rhythm */
